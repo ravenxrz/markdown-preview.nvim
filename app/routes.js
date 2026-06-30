@@ -16,6 +16,16 @@ use((req, res, next) => {
   next()
 })
 
+// markdown-preview numeric buffer redirect: frontend rewrites /page/:number to /:number.
+use((req, res, next) => {
+  if (/^\/\d+$/.test(req.asPath)) {
+    res.statusCode = 302
+    res.setHeader('Location', `/page${req.asPath}`)
+    return res.end()
+  }
+  next()
+})
+
 // /_next/path
 use((req, res, next) => {
   if (/\/_next/.test(req.asPath)) {
